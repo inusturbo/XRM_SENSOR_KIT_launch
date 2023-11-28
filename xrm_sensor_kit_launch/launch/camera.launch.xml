@@ -1,6 +1,6 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="camera_type" default="left"/>
+  <arg name="camera_type" default="front"/>
 
   <group>
     <push-ros-namespace namespace="camera"/>
@@ -8,6 +8,8 @@
       <push-ros-namespace namespace="traffic_light"/>
 
       <!-- (usb_cam_node is assumed to have launched on logging PC) -->
+      <node pkg="usb_cam" exec="camera.launch" name="usb_cam_node_exe" output="log"/>
+      
       <node pkg="topic_tools" exec="relay" name="tl_camera_info_relay" output="log">
         <param name="input_topic" value="$(var camera_type)/camera_info"/>
         <param name="output_topic" value="camera_info"/>
