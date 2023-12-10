@@ -1,6 +1,6 @@
 image_width: 1920
 image_height: 1080
-camera_name: traffic_light/camera
+camera_name: camera0
 camera_matrix:
   rows: 3
   cols: 3

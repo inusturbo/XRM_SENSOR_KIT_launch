@@ -1,1 +1,1 @@
-# sample_sensor_kit_launch
+# xrm_sensor_kit_launch
