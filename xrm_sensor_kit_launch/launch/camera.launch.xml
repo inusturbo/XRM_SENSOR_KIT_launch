@@ -1,28 +1,33 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <!--    common parameters -->
-  <arg name="image_0" default="camera_0" description="image raw topic name"/>
-
-  <!--    tensorrt params -->
-  <arg name="mode" default="FP32"/>
-  <arg name="yolo_type" default="yolov3" description="choose image raw number(0-7)"/>
-  <arg name="label_file" default="coco.names" description="choose image raw number(0-7)"/>
-  <arg name="gpu_id" default="0" description="choose image raw number(0-7)"/>
-  <arg name="use_intra_process" default="true"/>
-  <arg name="use_multithread" default="true"/>
-
+  <arg name="camera_type" default="front"/>
   <group>
     <push-ros-namespace namespace="camera"/>
-    <include file="$(find-pkg-share common_sensor_launch)/launch/camera_node_container.launch.py">
-      <arg name="mode" value="$(var mode)"/>
-      <arg name="input_image" value="$(var image_0)"/>
-      <arg name="camera_container_name" value="front_camera_container"/>
-      <arg name="yolo_type" value="$(var yolo_type)"/>
-      <arg name="label_file" value="$(var label_file)"/>
-      <arg name="gpu_id" value="$(var gpu_id)"/>
-      <arg name="use_intra_process" value="$(var use_intra_process)"/>
-      <arg name="use_multithread" value="$(var use_multithread)"/>
-      <arg name="output_topic" value="camera0/rois0"/>
-    </include>
+    <group>
+      <push-ros-namespace namespace="traffic_light"/>
+      <!-- (usb_cam_node is assumed to have launched on logging PC) -->
+      <node pkg="usb_cam" exec="usb_cam_node_exe" name="usb_cam_node" output="screen">
+        <param name="video_device" value="/dev/video0"/>
+        <param name="image_width" value="1920"/>
+        <param name="image_height" value="1080"/>
+        <param name="pixel_format" value="mjpeg2rgb"/>
+        <param name="camera_frame_id" value="camera"/>
+        <param name="camera_info_url" value="package://usb_cam/config/camera_info.yaml"/>
+        <param name="framerate" value="30.0"/>
+        <param name="camera_name" value="camera0"/>
+      </node>
+      <node pkg="topic_tools" exec="relay" name="tl_camera_info_relay" output="log">
+        <param name="input_topic" value="$(var camera_type)/camera_info"/>
+        <param name="output_topic" value="camera_info"/>
+        <param name="type" value="sensor_msgs/msg/CameraInfo"/>
+        <param name="reliability" value="best_effort"/>
+      </node>
+      <node pkg="topic_tools" exec="relay" name="tl_compressed_image_relay" output="log">
+        <param name="input_topic" value="$(var camera_type)/image_raw/compressed"/>
+        <param name="output_topic" value="image_raw/compressed"/>
+        <param name="type" value="sensor_msgs/msg/CompressedImage"/>
+        <param name="reliability" value="best_effort"/>
+      </node>
+    </group>
   </group>
 </launch>
