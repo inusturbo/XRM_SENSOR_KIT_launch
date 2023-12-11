@@ -1,6 +1,5 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="camera_type" default="front"/>
   <!--    common parameters -->
   <arg name="image_0" default="camera_0" description="image raw topic name"/>
 
