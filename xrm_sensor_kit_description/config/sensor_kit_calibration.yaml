@@ -1,11 +1,4 @@
 sensor_kit_base_link:
-  camera0/camera_link: # camera
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    roll: 0.0
-    pitch: 0.0
-    yaw: 0.0
   rs32_top_base_link: # LiDAR
     x: 0.0
     y: 0.0
@@ -13,10 +6,3 @@ sensor_kit_base_link:
     roll: 0.0
     pitch: 0.0
     yaw: 0
-  imu_link: # imu
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    roll: 0.0
-    pitch: 0.0
-    yaw: 0.0
