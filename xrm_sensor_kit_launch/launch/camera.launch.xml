@@ -6,9 +6,9 @@
       <push-ros-namespace namespace="traffic_light"/>
       <!-- (usb_cam_node is assumed to have launched on logging PC) -->
       <node pkg="usb_cam" exec="usb_cam_node_exe" name="usb_cam_node" output="screen">
-        <remap from="/image_raw" to="image_raw" />
-        <remap from="/camera_info" to="camera_info" />
-        <remap from="/image_raw/compressed" to="image_raw/compressed" />
+        <remap from="image_raw" to="/sensing/camera/traffic_light/image_raw" />
+        <remap from="camera_info" to="/sensing/camera/traffic_light/camera_info" />
+        <remap from="image_raw/compressed" to="/sensing/camera/traffic_light/image_raw/compressed" />
         <param name="video_device" value="/dev/video0"/>
         <param name="image_width" value="1920"/>
         <param name="image_height" value="1080"/>
