@@ -1,32 +1,22 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="camera_type" default="front"/>
   <group>
     <push-ros-namespace namespace="camera"/>
     <group>
       <push-ros-namespace namespace="traffic_light"/>
       <!-- (usb_cam_node is assumed to have launched on logging PC) -->
       <node pkg="usb_cam" exec="usb_cam_node_exe" name="usb_cam_node" output="screen">
+        <remap from="/image_raw" to="image_raw" />
+        <remap from="/camera_info" to="camera_info" />
+        <remap from="/image_raw/compressed" to="image_raw/compressed" />
         <param name="video_device" value="/dev/video0"/>
         <param name="image_width" value="1920"/>
         <param name="image_height" value="1080"/>
         <param name="pixel_format" value="mjpeg2rgb"/>
-        <param name="camera_frame_id" value="camera"/>
+        <param name="camera_frame_id" value="camera4/camera_link"/>
         <param name="camera_info_url" value="package://usb_cam/config/camera_info.yaml"/>
         <param name="framerate" value="30.0"/>
         <param name="camera_name" value="camera0"/>
-      </node>
-      <node pkg="topic_tools" exec="relay" name="tl_camera_info_relay" output="log">
-        <param name="input_topic" value="$(var camera_type)/camera_info"/>
-        <param name="output_topic" value="camera_info"/>
-        <param name="type" value="sensor_msgs/msg/CameraInfo"/>
-        <param name="reliability" value="best_effort"/>
-      </node>
-      <node pkg="topic_tools" exec="relay" name="tl_compressed_image_relay" output="log">
-        <param name="input_topic" value="$(var camera_type)/image_raw/compressed"/>
-        <param name="output_topic" value="image_raw/compressed"/>
-        <param name="type" value="sensor_msgs/msg/CompressedImage"/>
-        <param name="reliability" value="best_effort"/>
       </node>
     </group>
   </group>

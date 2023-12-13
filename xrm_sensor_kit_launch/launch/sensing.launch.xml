@@ -24,6 +24,11 @@
       <arg name="launch_driver" value="$(var launch_driver)"/>
     </include>
 
+    <!-- GNSS Driver -->
+    <include file="$(find-pkg-share xrm_sensor_kit_launch)/launch/gnss.launch.xml">
+      <arg name="launch_driver" value="$(var launch_driver)"/>
+    </include>
+
     <!-- Vehicle Velocity Converter  -->
     <include file="$(find-pkg-share vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
       <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
